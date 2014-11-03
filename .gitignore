@@ -1,0 +1,44 @@
+﻿##################
+# Unity ignores:
+#
+# !!! WARNING !!!
+#
+# � you MUST convert Unity to using Metafiles *before* you start using this
+#  .gitignore file, or you WILL lose data!
+#
+
+# All platforms:
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bu]ilds/
+UnityProject/Builds
+*.csproj
+*.pidb
+*.unityproj
+*.sln
+*.userprefs
+/*.user
+/*.booproj
+/*.suo
+*.*~
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac desktop service store files
+.DS_Store
+
+# Ignore weird changes of Unity Test Tools (which should be a bug)
+UnityProject/Assets/ThirdParty
+UnityProject/Assets/ThirdParty.meta
+
+# Unity VS solution
+UnityProject/UnityVS.UnityProject.v12.suo
