@@ -37,7 +37,7 @@ $RECYCLE.BIN/
 .DS_Store
 
 # Ignore weird changes of Unity Test Tools (which should be a bug)
-UnityProject/Assets/ThirdParty
+Unity/Assets/ThirdParty
 UnityProject/Assets/ThirdParty.meta
 
 # Unity VS solution
