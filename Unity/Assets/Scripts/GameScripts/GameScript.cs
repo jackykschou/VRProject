@@ -90,11 +90,11 @@ namespace Assets.Scripts.GameScripts
 
         void InitializeHelper()
         {
-
             if (_initialized)
             {
                 return;
             }
+
             if (!_firstTimeInitialized)
             {
                 InitializeFields();
@@ -116,59 +116,24 @@ namespace Assets.Scripts.GameScripts
             GameScriptEventManager.UpdateInitialized();
         }
 
-        protected virtual void Update()
+        private void InitializeFields()
         {
+            GameScriptEventManager = GetComponent<GameScriptEventManager>();
+            GameScriptEventManager.UpdateGameScriptEvents(this);
         }
 
-        protected virtual void FixedUpdate()
+        private void SubscribeGameEvents()
         {
-        }
-
-        public void DisableGameObject(float delay = 0f)
-        {
-            if (!gameObject.activeSelf || _destroyed || GameScriptEventManager.Destroyed)
+            foreach (var info in GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
             {
-                return;
-            }
-            _destroyed = true;
-            StartCoroutine(DisableGameObjectIE(delay));
-        }
-
-        IEnumerator DisableGameObjectIE(float delay)
-        {
-            yield return new WaitForEndOfFrame();
-            if (delay > 0f)
-            {
-                yield return new WaitForSeconds(delay);
-            }
-            TriggerGameScriptEvent(GameScriptEvent.OnObjectDestroyed);
-            _disabled = true;
-            if (PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
-            {
-                PrefabManager.Instance.DespawnPrefab(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-
-        public void ImmediateDisableGameObject()
-        {
-            if (!gameObject.activeSelf || _destroyed || GameScriptEventManager.Destroyed)
-            {
-                return;
-            }
-            _destroyed = true;
-            TriggerGameScriptEvent(GameScriptEvent.OnObjectDestroyed);
-            _disabled = true;
-            if (PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
-            {
-                PrefabManager.Instance.DespawnPrefab(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
+                foreach (var attr in Attribute.GetCustomAttributes(info))
+                {
+                    if (attr.GetType() == typeof(GameEventAttribute))
+                    {
+                        GameEventAttribute gameEventSubscriberAttribute = attr as GameEventAttribute;
+                        GameEventManager.Instance.SubscribeGameEvent(this, gameEventSubscriberAttribute.Event, info);
+                    }
+                }
             }
         }
 
@@ -205,27 +170,6 @@ namespace Assets.Scripts.GameScripts
             _deinitialized = true;
         }
 
-        private void InitializeFields()
-        {
-            GameScriptEventManager = GetComponent<GameScriptEventManager>();
-            GameScriptEventManager.UpdateGameScriptEvents(this);
-        }
-	
-        private void SubscribeGameEvents()
-        {
-            foreach (var info in GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
-            {
-                foreach (var attr in Attribute.GetCustomAttributes(info))
-                {
-                    if (attr.GetType() == typeof(GameEventAttribute))
-                    {
-                        GameEventAttribute gameEventSubscriberAttribute = attr as GameEventAttribute;
-                        GameEventManager.Instance.SubscribeGameEvent(this, gameEventSubscriberAttribute.Event, info);
-                    }
-                }
-            }
-        }
-
         private void UnsubscribeGameEvents()
         {
             foreach (var info in GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
@@ -239,6 +183,51 @@ namespace Assets.Scripts.GameScripts
                     }
                 }
             }
+        }
+
+        public void DisableGameObject(float delay = 0f)
+        {
+            StartCoroutine(DisableGameObjectIE(delay));
+        }
+
+        IEnumerator DisableGameObjectIE(float delay)
+        {
+            if (delay > 0f)
+            {
+                yield return new WaitForSeconds(delay);
+            }
+            ImmediateDisableGameObject();
+        }
+
+        public void ImmediateDisableGameObject()
+        {
+            if (!gameObject.activeSelf || _destroyed || GameScriptEventManager.Destroyed)
+            {
+                return;
+            }
+
+            _destroyed = true;
+
+            TriggerGameScriptEvent(GameScriptEvent.OnObjectDestroyed);
+
+            _disabled = true;
+
+            if (PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
+            {
+                PrefabManager.Instance.DespawnPrefab(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        protected virtual void Update()
+        {
+        }
+
+        protected virtual void FixedUpdate()
+        {
         }
 
         protected virtual void OnTriggerEnter2D(Collider2D coll)
