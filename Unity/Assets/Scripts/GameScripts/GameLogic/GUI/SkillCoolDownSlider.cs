@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.GUI
 {
@@ -40,7 +39,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
             DisableHighlight(SkillId);
         }
 
-        [GameEventAttribute(GameEvent.OnPlayerSkillCoolDownUpdate)]
+        [Attributes.GameEvent(GameEvent.OnPlayerSkillCoolDownUpdate)]
         public void UpdateSkillCoolDown(int id, float percentage)
         {
             if (id == SkillId)
@@ -55,7 +54,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
             }
         }
 
-        [GameEventAttribute(GameEvent.EnableHighlightSkill)]
+        [Attributes.GameEvent(GameEvent.EnableHighlightSkill)]
         public void EnableHighlight(int id, float origHighlightDuration)
         {
             if (id == SkillId)
@@ -73,7 +72,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
             }
         }
 
-        [GameEventAttribute(GameEvent.DisableHighlightSkill)]
+        [Attributes.GameEvent(GameEvent.DisableHighlightSkill)]
         public void DisableHighlight(int id)
         {
             if (id == SkillId)

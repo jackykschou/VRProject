@@ -2,7 +2,6 @@
 using Assets.Scripts.Attributes;
 using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.Tests.GameLogic
 {
@@ -47,25 +46,25 @@ namespace Assets.Scripts.Tests.GameLogic
             Debug.Log("SampleGameLogic GameScriptEventStaticPrivate");
         }
 
-        [GameEventAttribute(GameEvent.ExampleEvent)]
+        [GameEvent(GameEvent.ExampleEvent)]
         public void GameEventPublic()
         {
             Debug.Log("SampleGameLogic GameEventPublic");
         }
 
-        [GameEventAttribute(GameEvent.ExampleEvent)]
+        [GameEvent(GameEvent.ExampleEvent)]
         private void GameEventPrivate()
         {
             Debug.Log("SampleGameLogic GameEventPrivate");
         }
 
-        [GameEventAttribute(GameEvent.ExampleEvent)]
+        [GameEvent(GameEvent.ExampleEvent)]
         public static void GameEventStaticPublic()
         {
             Debug.Log("SampleGameLogic GameEventStaticPublic");
         }
 
-        [GameEventAttribute(GameEvent.ExampleEvent)]
+        [GameEvent(GameEvent.ExampleEvent)]
         private static void GameEventStaticPrivate()
         {
             Debug.Log("SampleGameLogic GameEventStaticPrivate");

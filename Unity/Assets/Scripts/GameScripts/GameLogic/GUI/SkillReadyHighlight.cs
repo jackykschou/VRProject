@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using UnityEngine.UI;
 
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.GUI
 {
@@ -33,7 +33,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
             }
         }
 
-        [GameEventAttribute(GameEvent.OnPlayerSkillCoolDownUpdate)]
+        [GameEvent(GameEvent.OnPlayerSkillCoolDownUpdate)]
         public void UpdateSkillCoolDown(int id, float percentage)
         {
             if (id == SkillId)

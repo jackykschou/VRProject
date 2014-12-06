@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.GameScripts.GameLogic
 {
-    public class GameScriptEventManager : MonoBehaviour 
+    public class GameScriptManager : MonoBehaviour 
     {
         private Dictionary<Type, Dictionary<Constants.GameScriptEvent, Dictionary<GameScript, List<MethodInfo>>>> _gameScriptEvents;
         private List<GameScript> _gameScripts;
@@ -29,10 +29,10 @@ namespace Assets.Scripts.GameScripts.GameLogic
             get { return _gameScripts.Any(s => s.Destroyed); }
         }
 
-        private bool _gameScriptsInitialized = false;
-        private bool _firstTimeInitialized = false;
-        private bool _initialized = false;
-        private bool _deinitialized = false;
+        private bool _gameScriptsInitialized;
+        private bool _firstTimeInitialized;
+        private bool _initialized;
+        private bool _deinitialized;
 
         public void UpdateInitialized()
         {
@@ -47,7 +47,7 @@ namespace Assets.Scripts.GameScripts.GameLogic
                 {
                     foreach (var pair in value[gameScriptEvent])
                     {
-                        if (pair.Key.GameScriptEventManager.Initialized && !pair.Key.GameScriptEventManager.Disabled)
+                        if (pair.Key.GameScriptManager.Initialized && !pair.Key.GameScriptManager.Disabled)
                         {
                             pair.Value.ForEach(m => m.Invoke(pair.Key, args));
                         }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Attributes;
 using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
 {
@@ -17,7 +17,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
         {
         }
 
-        [GameEventAttribute(GameEvent.OnLevelEnded)]
+        [GameEvent(GameEvent.OnLevelEnded)]
         public void LevelEnded()
         {
             for (int i = 0; i <= 5; i++)

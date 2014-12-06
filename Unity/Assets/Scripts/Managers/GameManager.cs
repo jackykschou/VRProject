@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Linq;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Constants;
 using Assets.Scripts.GameScripts.GameLogic;
 using Assets.Scripts.Utility;
 using UnityEngine;
 
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
+using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 
 namespace Assets.Scripts.Managers
 {
@@ -117,7 +118,7 @@ namespace Assets.Scripts.Managers
             GameEventManager.Instance.TriggerGameEvent(GameEvent.OnLevelFinishedLoading);
         }
 
-        [GameEventAttribute(GameEvent.OnLoadingScreenFinished)]
+        [GameEvent(GameEvent.OnLoadingScreenFinished)]
         public void OnLoadingScreenFinished()
         {
             GameEventManager.Instance.TriggerGameEvent(GameEvent.OnLevelStarted);

@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.GameScripts.GameLogic;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.GameScripts.GameLogic;
 using Assets.Scripts.Managers;
 using UnityEngine;
 using System.Collections;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.GUI
 {
@@ -15,13 +15,13 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
 
         }
 
-        [GameEventAttribute(GameEvent.OnLevelStarted)]
+        [GameEvent(GameEvent.OnLevelStarted)]
         public void ShowKillCount()
         {
             MessageManager.Instance.DisplayKillCount(true);
         }
 
-        [GameEventAttribute(GameEvent.OnLevelEnded)]
+        [GameEvent(GameEvent.OnLevelEnded)]
         public void HideKillCount()
         {
             MessageManager.Instance.DisplayKillCount(false);

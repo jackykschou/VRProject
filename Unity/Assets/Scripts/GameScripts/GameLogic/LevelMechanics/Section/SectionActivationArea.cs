@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.GameScripts.GameLogic.PhysicsBody;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.GameScripts.GameLogic.PhysicsBody;
 using UnityEngine;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
@@ -38,7 +38,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
         }
 
         [GameScriptEventAttribute(GameScriptEvent.SurvivalAreaSpawned)]
-        [GameEventAttribute(GameEvent.OnLevelStarted)]
+        [GameEvent(GameEvent.OnLevelStarted)]
         public void AllowSpawn()
         {
             _canSpawn = true;

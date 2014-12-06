@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Constants;
 using Assets.Scripts.GameScripts.GameLogic.Spawner;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using Assets.Scripts.GameScripts.GameLogic;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
+using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 
 namespace Assets.Scripts.Managers
 {
@@ -76,7 +77,7 @@ namespace Assets.Scripts.Managers
             return nextArea;
         }
 
-        [GameEventAttribute(GameEvent.SurvivalSectionEnded)]
+        [GameEvent(GameEvent.SurvivalSectionEnded)]
         public void SpawnNextSection()
         {
             TriggerGameEvent(GameEvent.DisablePlayerCharacter);
@@ -115,7 +116,7 @@ namespace Assets.Scripts.Managers
             TriggerGameEvent(GameEvent.EnablePlayerCharacter);
         }
 
-        [GameEventAttribute(GameEvent.OnLevelStarted)]
+        [GameEvent(GameEvent.OnLevelStarted)]
         public void OnLevelStarted()
         {
             TriggerGameEvent(GameEvent.OnPlayerReset);

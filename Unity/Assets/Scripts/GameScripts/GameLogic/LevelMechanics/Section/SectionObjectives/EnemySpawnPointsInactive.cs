@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObjectives
 {
@@ -10,7 +9,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObj
     {
         private List<GameObject> ActiveSpawnPoints;
 
-        [GameEventAttribute(GameEvent.OnSectionEnemySpawnPointActivated)]
+        [Attributes.GameEvent(GameEvent.OnSectionEnemySpawnPointActivated)]
         public void OnSectionEnemySpawnerActivated(GameObject spawnPoint, int sectionId)
         {
             if (sectionId == SectionId)
@@ -19,7 +18,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObj
             }
         }
 
-        [GameEventAttribute(GameEvent.OnSectionEnemySpawnPointDeactivated)]
+        [Attributes.GameEvent(GameEvent.OnSectionEnemySpawnPointDeactivated)]
         public void OnSectionEnemySpawnPointDeactivated(GameObject spawnPoint, int sectionId)
         {
             if (sectionId == SectionId)

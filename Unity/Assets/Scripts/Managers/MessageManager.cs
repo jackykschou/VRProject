@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Assets.Scripts.GameScripts.GameLogic.Spawner;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 using Assets.Scripts.GameScripts.GameLogic.ObjectMotor;
 
 

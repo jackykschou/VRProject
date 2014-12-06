@@ -36,7 +36,7 @@ namespace Assets.Scripts.Managers
             for (int i = 0; i < dict.Count; ++i)
             {
                 GameScript key = dict.Keys.ElementAt(i);
-                if (key.GameScriptEventManager.Initialized && !key.GameScriptEventManager.Disabled)
+                if (key.GameScriptManager.Initialized && !key.GameScriptManager.Disabled)
                 {
                     dict[key].ForEach(m => m.Invoke(key, args));
                 }

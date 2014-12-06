@@ -1,10 +1,11 @@
-﻿using Assets.Scripts.Constants;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.Constants;
 using Assets.Scripts.GameScripts.GameLogic;
 using Assets.Scripts.Utility;
 using UnityEngine;
 
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
+using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 
 namespace Assets.Scripts.Managers
 {
@@ -48,13 +49,13 @@ namespace Assets.Scripts.Managers
             _instance = null;
         }
 
-        [GameEventAttribute(GameEvent.OnLevelEnded)]
+        [GameEvent(GameEvent.OnLevelEnded)]
         public void OnLevelEnded()
         {
             AudioManager.Instance.StopLevelLoop(BackGroundMusicLoop);
         }
 
-        [GameEventAttribute(GameEvent.OnLevelStarted)]
+        [GameEvent(GameEvent.OnLevelStarted)]
         public void OnLevelStarted()
         {
             GameManager.Instance.HUD.SetActive(IsPlayLevel);
@@ -66,7 +67,7 @@ namespace Assets.Scripts.Managers
             AudioManager.Instance.PlayLevelLoop(BackGroundMusicLoop);
         }
 
-        [GameEventAttribute(GameEvent.OnLevelFinishedLoading)]
+        [GameEvent(GameEvent.OnLevelFinishedLoading)]
         public void OnLevelFinishedLoading()
         {
             if (CameraInitialFollowTransform == null)

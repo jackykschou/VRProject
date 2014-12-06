@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Misc
 {
@@ -22,8 +22,8 @@ namespace Assets.Scripts.GameScripts.GameLogic.Misc
             AstarPath.active.UpdateGraphs(bounds);
         }
 
-        [GameEventAttribute(GameEvent.SurvivalSectionStarted)]
-        [GameEventAttribute(GameEvent.OnLevelFinishedLoading)]
+        [GameEvent(GameEvent.SurvivalSectionStarted)]
+        [Attributes.GameEvent(GameEvent.OnLevelFinishedLoading)]
         public void RescanGraph()
         {
             if (AstarPath.active != null)

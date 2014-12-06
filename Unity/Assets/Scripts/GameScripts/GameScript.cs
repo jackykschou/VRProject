@@ -1,45 +1,45 @@
 ﻿using System;
 using System.Collections;
 using System.Reflection;
-using Assets.Scripts.Constants;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.GameScripts.GameLogic;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Utility;
 using UnityEngine;
 
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
+using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts
 {
     [RequireComponent(typeof(GameScriptEditorUpdate))]
-    [RequireComponent(typeof(GameScriptEventManager))]
+    [RequireComponent(typeof(GameScriptManager))]
     public abstract class GameScript : MonoBehaviour
     {
         public string LabelName;
-        public GameScriptEventManager GameScriptEventManager { get; set; }
+        public GameScriptManager GameScriptManager { get; set; }
 
-        private bool _firstTimeInitialized = false;
+        private bool _firstTimeInitialized;
 
         public bool Initialized {
             get { return _initialized; }
         }
-        private bool _initialized = false;
+        private bool _initialized;
         public bool Deinitialized
         {
             get { return _deinitialized; }
         }
-        private bool _deinitialized = false;
+        private bool _deinitialized;
         public bool Disabled
         {
             get { return _disabled; }
         }
-        private bool _disabled = false;
+        private bool _disabled;
         public bool Destroyed
         {
             get { return _destroyed; }
         }
-        private bool _destroyed = false;
+        private bool _destroyed;
 
         protected virtual void FirstTimeInitialize()
         {
@@ -60,7 +60,7 @@ namespace Assets.Scripts.GameScripts
 
         IEnumerator TriggerGameScriptEventIE(GameScriptEvent gameScriptEvent, params object[] args)
         {
-            while (GameScriptEventManager == null || !GameScriptEventManager.Initialized)
+            while (GameScriptManager == null || !GameScriptManager.Initialized)
             {
                 yield return new WaitForSeconds(Time.deltaTime);
             }
@@ -113,13 +113,13 @@ namespace Assets.Scripts.GameScripts
             _initialized = true;
             _disabled = false;
             _destroyed = false;
-            GameScriptEventManager.UpdateInitialized();
+            GameScriptManager.UpdateInitialized();
         }
 
         private void InitializeFields()
         {
-            GameScriptEventManager = GetComponent<GameScriptEventManager>();
-            GameScriptEventManager.UpdateGameScriptEvents(this);
+            GameScriptManager = GetComponent<GameScriptManager>();
+            GameScriptManager.UpdateGameScriptEvents(this);
         }
 
         private void SubscribeGameEvents()
@@ -201,7 +201,7 @@ namespace Assets.Scripts.GameScripts
 
         public void ImmediateDisableGameObject()
         {
-            if (!gameObject.activeSelf || _destroyed || GameScriptEventManager.Destroyed)
+            if (!gameObject.activeSelf || _destroyed || GameScriptManager.Destroyed)
             {
                 return;
             }

@@ -21,7 +21,7 @@
         OnLevelStarted,                // void()
         OnLevelEnded,                  // void()
 
-        OnGameEventSent,                 // void(GameEvent)
+        OnGameEventSent,                 // void(GameEventAttribute)
         
         DisableAbility,                // void(int)
         EnableAbility,                 // void(int)
