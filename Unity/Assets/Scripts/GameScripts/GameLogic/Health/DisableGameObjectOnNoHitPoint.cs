@@ -1,7 +1,7 @@
 ﻿using System.Collections;
+using Assets.Scripts.Attributes;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Health
 {
@@ -15,7 +15,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Health
         {
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnObjectHasNoHitPoint)]
+        [GameScriptEvent(GameScriptEvent.OnObjectHasNoHitPoint)]
         public void DestroyGameObject()
         {
             StartCoroutine(DestroyGameObjectIE());

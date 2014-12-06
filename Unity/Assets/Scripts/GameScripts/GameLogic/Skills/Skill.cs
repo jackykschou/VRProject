@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.GameScripts.GameLogic.Skills.CastableCondition;
 using Assets.Scripts.GameScripts.GameLogic.Skills.SkillCasters;
 using Assets.Scripts.GameScripts.GameLogic.Skills.SkillEffects;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Skills
 {
@@ -133,7 +133,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Skills
             }
         }
         
-        [GameScriptEventAttribute(GameScriptEvent.UpdateSkillCooldownPercentage)]
+        [GameScriptEvent(GameScriptEvent.UpdateSkillCooldownPercentage)]
         public void UpdateCoolDownPercentage(Skill skill, float percentage)
         {
             _coolDownPercentage = percentage;

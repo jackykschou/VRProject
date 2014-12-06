@@ -1,5 +1,5 @@
-﻿using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
+﻿using Assets.Scripts.Attributes;
+using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.PhysicsBody
 {
@@ -12,13 +12,13 @@ namespace Assets.Scripts.GameScripts.GameLogic.PhysicsBody
             Collider.isTrigger = false;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnObjectHasNoHitPoint)]
+        [GameScriptEvent(GameScriptEvent.OnObjectHasNoHitPoint)]
         public void DisableCharacterCollider()
         {
             Collider.enabled = false;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.ResetHealth)]
+        [GameScriptEvent(GameScriptEvent.ResetHealth)]
         public void ResetHealth()
         {
             Collider.enabled = true;

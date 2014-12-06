@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Camera
 {
@@ -33,7 +32,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Camera
             transform.position = new Vector3(wantedPosition.x, wantedPosition.y, transform.position.z);
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.CameraFollowTarget)]
+        [Attributes.GameScriptEvent(GameScriptEvent.CameraFollowTarget)]
         public void UpdateTarget(Transform target)
         {
             Target = target;

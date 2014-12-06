@@ -1,7 +1,7 @@
 ﻿using System.Collections;
+using Assets.Scripts.Attributes;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Misc
 {
@@ -16,7 +16,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Misc
 
         public FixTimeDispatcher InterruptCoolDown;
 
-        [GameScriptEventAttribute(GameScriptEvent.InterruptCharacter)]
+        [GameScriptEvent(GameScriptEvent.InterruptCharacter)]
         public void InterruptCharacter()
         {
             if (!InterruptCoolDown.CanDispatch())

@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Attributes;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Skills.SkillCasters
 {
@@ -26,25 +26,25 @@ namespace Assets.Scripts.GameScripts.GameLogic.Skills.SkillCasters
             Skills = GetComponentsInChildren<Skill>().ToList();
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.UpdateSkills)]
+        [GameScriptEvent(GameScriptEvent.UpdateSkills)]
         public void UpdateSkills()
         {
             Skills = GetComponentsInChildren<Skill>().ToList();
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.RemoveSkill)]
+        [GameScriptEvent(GameScriptEvent.RemoveSkill)]
         public void RemoveSkill(Skill skill)
         {
             Skills.Remove(skill);
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnNewTargetDiscovered)]
+        [GameScriptEvent(GameScriptEvent.OnNewTargetDiscovered)]
         public void UpdateTarget(GameObject target)
         {
             Target = target.transform;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnCharacterMove)]
+        [GameScriptEvent(GameScriptEvent.OnCharacterMove)]
         public void OnCharacterMove(Vector2 direction)
         {
             Moving = true;

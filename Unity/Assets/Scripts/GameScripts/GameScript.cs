@@ -2,13 +2,11 @@
 using System.Collections;
 using System.Reflection;
 using Assets.Scripts.Attributes;
+using Assets.Scripts.Constants;
 using Assets.Scripts.GameScripts.GameLogic;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Utility;
 using UnityEngine;
-
-using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts
 {
@@ -21,33 +19,11 @@ namespace Assets.Scripts.GameScripts
 
         private bool _firstTimeInitialized;
 
-        public bool Initialized {
-            get { return _initialized; }
-        }
-        private bool _initialized;
-        public bool Deinitialized
-        {
-            get { return _deinitialized; }
-        }
-        private bool _deinitialized;
-        public bool Disabled
-        {
-            get { return _disabled; }
-        }
-        private bool _disabled;
-        public bool Destroyed
-        {
-            get { return _destroyed; }
-        }
-        private bool _destroyed;
+        public bool Initialized { get; private set; }
+        public bool Deinitialized { get; private set; }
+        public bool Disabled{ get; private set; }
+        public bool Destroyed { get; private set; }
 
-        protected virtual void FirstTimeInitialize()
-        {
-        }
-
-        protected abstract void Initialize();
-
-        protected abstract void Deinitialize();
 
         public virtual void EditorUpdate()
         {
@@ -55,10 +31,10 @@ namespace Assets.Scripts.GameScripts
 
         public void TriggerGameScriptEvent(GameScriptEvent gameScriptEvent, params object[] args)
         {
-            StartCoroutine(TriggerGameScriptEventIE(gameScriptEvent, args));
+            StartCoroutine(TriggerGameScriptEventIe(gameScriptEvent, args));
         }
 
-        IEnumerator TriggerGameScriptEventIE(GameScriptEvent gameScriptEvent, params object[] args)
+        IEnumerator TriggerGameScriptEventIe(GameScriptEvent gameScriptEvent, params object[] args)
         {
             while (GameScriptManager == null || !GameScriptManager.Initialized)
             {
@@ -90,14 +66,15 @@ namespace Assets.Scripts.GameScripts
 
         void InitializeHelper()
         {
-            if (_initialized)
+            if (Initialized)
             {
                 return;
             }
 
             if (!_firstTimeInitialized)
             {
-                InitializeFields();
+                GameScriptManager = GetComponent<GameScriptManager>();
+                GameScriptManager.UpdateGameScriptEvents(this);
                 SubscribeGameEvents();
                 FirstTimeInitialize();
             }
@@ -109,17 +86,13 @@ namespace Assets.Scripts.GameScripts
                 gameObject.CacheGameObject();
                 _firstTimeInitialized = true;
             }
-            _deinitialized = false;
-            _initialized = true;
-            _disabled = false;
-            _destroyed = false;
-            GameScriptManager.UpdateInitialized();
-        }
 
-        private void InitializeFields()
-        {
-            GameScriptManager = GetComponent<GameScriptManager>();
-            GameScriptManager.UpdateGameScriptEvents(this);
+            Deinitialized = false;
+            Initialized = true;
+            Disabled = false;
+            Destroyed = false;
+
+            GameScriptManager.UpdateInitialized();
         }
 
         private void SubscribeGameEvents()
@@ -154,20 +127,20 @@ namespace Assets.Scripts.GameScripts
 
         void DeinitializeHelper()
         {
-            if (_deinitialized || !_initialized)
+            if (Deinitialized || !Initialized)
             {
                 return;
             }
 
-            if (_disabled && !PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
+            if (Disabled && !PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
             {
                 UnsubscribeGameEvents();
                 gameObject.UncacheGameObject();
             }
 
             Deinitialize();
-            _initialized = false;
-            _deinitialized = true;
+            Initialized = false;
+            Deinitialized = true;
         }
 
         private void UnsubscribeGameEvents()
@@ -201,16 +174,16 @@ namespace Assets.Scripts.GameScripts
 
         public void ImmediateDisableGameObject()
         {
-            if (!gameObject.activeSelf || _destroyed || GameScriptManager.Destroyed)
+            if (!gameObject.activeSelf || Destroyed || GameScriptManager.Destroyed)
             {
                 return;
             }
 
-            _destroyed = true;
+            Destroyed = true;
 
             TriggerGameScriptEvent(GameScriptEvent.OnObjectDestroyed);
 
-            _disabled = true;
+            Disabled = true;
 
             if (PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
             {
@@ -220,6 +193,14 @@ namespace Assets.Scripts.GameScripts
             {
                 Destroy(gameObject);
             }
+        }
+
+        protected abstract void Initialize();
+
+        protected abstract void Deinitialize();
+
+        protected virtual void FirstTimeInitialize()
+        {
         }
 
         protected virtual void Update()

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.PhysicsBody
 {
@@ -29,7 +29,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.PhysicsBody
         {
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnObjectDestroyed)]
+        [GameScriptEvent(GameScriptEvent.OnObjectDestroyed)]
         public void DisableCollider()
         {
             Collider.enabled = false;

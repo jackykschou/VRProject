@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Constants;
 using UnityEngine;
 
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 
 namespace Assets.Scripts.GameScripts.GameLogic.Animator
@@ -35,7 +35,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Animator
         {
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.SetAnimatorBoolState)]
+        [GameScriptEvent(GameScriptEvent.SetAnimatorBoolState)]
         public void SetAnimatorBoolState(string state)
         {
             Animator.SetBool(state, true);
@@ -49,7 +49,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Animator
             }
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.SetAnimatorFloatState)]
+        [GameScriptEvent(GameScriptEvent.SetAnimatorFloatState)]
         public void SetAnimatorIntState(string state, float value)
         {
             Animator.SetFloat(state, value);

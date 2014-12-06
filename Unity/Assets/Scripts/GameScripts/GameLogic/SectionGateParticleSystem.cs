@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic
 {
@@ -10,13 +10,13 @@ namespace Assets.Scripts.GameScripts.GameLogic
         private ParticleSystem _gateParticleSystem;
 
 
-        [GameScriptEventAttribute(GameScriptEvent.GateActivated)]
+        [GameScriptEvent(GameScriptEvent.GateActivated)]
         public void PlayActivateParticleSystem()
         {
             _gateParticleSystem.Play();
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.GateDeactivated)]
+        [GameScriptEvent(GameScriptEvent.GateDeactivated)]
         public void PlayDeactivateParticleSystem()
         {
             _gateParticleSystem.Stop();

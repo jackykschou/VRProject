@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Attributes;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
@@ -16,7 +15,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
             SectionActivated = false;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.UpdateSectionId)]
+        [GameScriptEvent(GameScriptEvent.UpdateSectionId)]
         public void UpdateSectionId(int id)
         {
             SectionId = id;

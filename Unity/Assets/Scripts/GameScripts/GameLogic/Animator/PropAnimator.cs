@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Constants;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Animator
 {
@@ -13,19 +12,19 @@ namespace Assets.Scripts.GameScripts.GameLogic.Animator
         {
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnObjectHasNoHitPoint)]
+        [Attributes.GameScriptEvent(GameScriptEvent.OnObjectHasNoHitPoint)]
         public void PlayDeathAnimation()
         {
             SetAnimatorBoolState(AnimatorControllerConstants.AnimatorParameterName.Death);
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.GateDeactivated)]
+        [Attributes.GameScriptEvent(GameScriptEvent.GateDeactivated)]
         public void PlayDeactivateAnimation()
         {
             SetAnimatorBoolState(AnimatorControllerConstants.AnimatorParameterName.Death);
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.GateActivated)]
+        [Attributes.GameScriptEvent(GameScriptEvent.GateActivated)]
         public void PlayActivateAnimation()
         {
             SetAnimatorBoolState(AnimatorControllerConstants.AnimatorParameterName.Idle);

@@ -3,7 +3,6 @@ using Assets.Scripts.Attributes;
 using Assets.Scripts.Managers;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
@@ -29,7 +28,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
             }
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.SurvivalAreaSpawned)]
+        [GameScriptEvent(GameScriptEvent.SurvivalAreaSpawned)]
         [GameEvent(GameEvent.OnLevelStarted)]
         public void UpdateSectionId()
         {

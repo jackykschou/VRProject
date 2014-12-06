@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Skills.SkillEffects.ActivateCondition
 {
@@ -17,7 +17,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Skills.SkillEffects.ActivateCondi
             return _holdTime >= TimeAbove;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.UpdateSkillButtonHoldEffectTime)]
+        [GameScriptEvent(GameScriptEvent.UpdateSkillButtonHoldEffectTime)]
         public void UpdateSkillButtonHoldEffectTime(float time)
         {
             _holdTime = time;

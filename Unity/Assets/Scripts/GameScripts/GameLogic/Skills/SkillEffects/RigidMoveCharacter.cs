@@ -1,8 +1,8 @@
-﻿using Assets.Scripts.Constants;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.Constants;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Skills.SkillEffects
 {
@@ -18,7 +18,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Skills.SkillEffects
             Activated = false;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.UpdateMoveDirection)]
+        [GameScriptEvent(GameScriptEvent.UpdateMoveDirection)]
         public void UpdateMoveDirection(Vector2 moveDirection)
         {
             _direction = moveDirection;
