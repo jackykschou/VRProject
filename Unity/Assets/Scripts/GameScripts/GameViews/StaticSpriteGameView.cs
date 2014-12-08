@@ -111,7 +111,7 @@ namespace Assets.Scripts.GameScripts.GameViews
             }
         }
 
-        [Attributes.GameScriptEvent(GameScriptEvent.OnObjectDestroyed)]
+        [Attributes.GameScriptEvent(GameScriptEvent.OnObjectDisabled)]
         public void DisableRender()
         {
             renderer.enabled = false;

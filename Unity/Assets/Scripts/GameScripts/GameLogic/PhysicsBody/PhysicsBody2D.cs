@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.Constants;
 using UnityEngine;
-using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.PhysicsBody
 {
@@ -29,60 +29,60 @@ namespace Assets.Scripts.GameScripts.GameLogic.PhysicsBody
         {
         }
 
-        [GameScriptEvent(GameScriptEvent.OnObjectDestroyed)]
+        [GameScriptEvent(GameScriptEvent.OnObjectDisabled)]
         public void DisableCollider()
         {
             Collider.enabled = false;
         }
 
-        protected override void OnCollisionEnter2D(Collision2D coll)
+        protected sealed override void OnCollisionEnter2D(Collision2D coll)
         {
-            if (Disabled || Deinitialized || !Initialized)
+            if (Destroyed || !Initialized)
             {
                 return;
             }
             TriggerGameScriptEvent(GameScriptEvent.OnPhysicsBodyOnTriggerEnter2D, coll);
         }
 
-        protected override void OnCollisionStay2D(Collision2D coll)
+        protected sealed override void OnCollisionStay2D(Collision2D coll)
         {
-            if (Disabled || Deinitialized || !Initialized)
+            if (Destroyed || !Initialized)
             {
                 return;
             }
             TriggerGameScriptEvent(GameScriptEvent.OnPhysicsBodyOnCollisionStay2D, coll);
         }
 
-        protected override void OnCollisionExit2D(Collision2D coll)
+        protected sealed override void OnCollisionExit2D(Collision2D coll)
         {
-            if (Disabled || Deinitialized || !Initialized)
+            if (Destroyed || !Initialized)
             {
                 return;
             }
             TriggerGameScriptEvent(GameScriptEvent.OnPhysicsBodyOnCollisionExit2D, coll);
         }
 
-        protected override void OnTriggerEnter2D(Collider2D coll)
+        protected sealed override void OnTriggerEnter2D(Collider2D coll)
         {
-            if (Disabled || Deinitialized || !Initialized)
+            if (Destroyed || !Initialized)
             {
                 return;
             }
             TriggerGameScriptEvent(GameScriptEvent.OnPhysicsBodyOnTriggerEnter2D, coll);
         }
 
-        protected override void OnTriggerStay2D(Collider2D coll)
+        protected sealed override void OnTriggerStay2D(Collider2D coll)
         {
-            if (Disabled || Deinitialized || !Initialized)
+            if (Destroyed || !Initialized)
             {
                 return;
             }
             TriggerGameScriptEvent(GameScriptEvent.OnPhysicsBodyOnTriggerStay2D, coll);
         }
 
-        protected override void OnTriggerExit2D(Collider2D coll)
+        protected sealed override void OnTriggerExit2D(Collider2D coll)
         {
-            if (Disabled || Deinitialized || !Initialized)
+            if (Destroyed || !Initialized)
             {
                 return;
             }

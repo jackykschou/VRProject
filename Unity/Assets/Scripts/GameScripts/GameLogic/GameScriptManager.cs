@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Assets.Scripts.Attributes;
+using Assets.Scripts.Constants;
+using Assets.Scripts.Utility;
 using UnityEngine;
 
 namespace Assets.Scripts.GameScripts.GameLogic
 {
     public class GameScriptManager : MonoBehaviour 
     {
-        private Dictionary<Type, Dictionary<Constants.GameScriptEvent, Dictionary<GameScript, List<MethodInfo>>>> _gameScriptEvents;
+        private Dictionary<Type, Dictionary<GameScriptEvent, Dictionary<GameScript, List<MethodInfo>>>> _gameScriptEvents;
         private List<GameScript> _gameScripts;
 
-        private bool _initialized;
         public bool Initialized 
         {
             get
@@ -20,17 +22,10 @@ namespace Assets.Scripts.GameScripts.GameLogic
                 return _initialized && _gameScriptsInitialized;
             }
         }
+        public bool Disabled { get; set; }
+        public bool Destroyed { get; set; }
 
-        public bool Disabled
-        {
-            get { return _gameScripts.Any(s => s.Disabled); }
-        }
-
-        public bool Destroyed
-        {
-            get { return _gameScripts.Any(s => s.Destroyed); }
-        }
-
+        private bool _initialized;
         private bool _gameScriptsInitialized;
         private bool _firstTimeInitialized;
         private bool _deinitialized;
@@ -40,18 +35,30 @@ namespace Assets.Scripts.GameScripts.GameLogic
             _gameScriptsInitialized = _gameScripts.All(s => s.Initialized);
         }
 
-        public void TriggerGameScriptEvent(Constants.GameScriptEvent gameScriptEvent, params object[] args)
+        public void TriggerGameScriptEvent(GameScriptEvent gameScriptEvent, params object[] args)
         {
+            if (Destroyed)
+            {
+                return;
+            }
+
+            StartCoroutine(TriggerGameScriptEventCoroutine(gameScriptEvent, args));
+        }
+
+        private IEnumerator TriggerGameScriptEventCoroutine(GameScriptEvent gameScriptEvent, params object[] args)
+        {
+            while (!Initialized)
+            {
+                yield return new WaitForSeconds(Time.deltaTime);
+            }
+
             foreach (var value in _gameScriptEvents.Values)
             {
                 if (value.ContainsKey(gameScriptEvent))
                 {
                     foreach (var pair in value[gameScriptEvent])
                     {
-                        if (pair.Key.GameScriptManager.Initialized && !pair.Key.GameScriptManager.Disabled)
-                        {
-                            pair.Value.ForEach(m => m.Invoke(pair.Key, args));
-                        }
+                        pair.Value.ForEach(m => m.Invoke(pair.Key, args));
                     }
                 }
             }
@@ -81,13 +88,18 @@ namespace Assets.Scripts.GameScripts.GameLogic
 
             if (!_firstTimeInitialized)
             {
-                _gameScriptEvents = new Dictionary<Type, Dictionary<Constants.GameScriptEvent, Dictionary<GameScript, List<MethodInfo>>>>();
+                _gameScriptEvents = new Dictionary<Type, Dictionary<GameScriptEvent, Dictionary<GameScript, List<MethodInfo>>>>();
                 _gameScripts = GetComponents<GameScript>().ToList();
                 _firstTimeInitialized = true;
-                UpdateInitialized();
+                gameObject.CacheGameObject();
             }
+
+            UpdateInitialized();
+
             _initialized = true;
             _deinitialized = false;
+            Disabled = false;
+            Destroyed = false;
         }
 
         void OnDespawned()
@@ -103,6 +115,7 @@ namespace Assets.Scripts.GameScripts.GameLogic
         void OnDestroy()
         {
             DeinitializeHelper();
+            gameObject.UncacheGameObject();
         }
 
         private void DeinitializeHelper()
@@ -135,7 +148,7 @@ namespace Assets.Scripts.GameScripts.GameLogic
                             Type gameScriptType = gameScript.GetType();
                             if (!_gameScriptEvents.ContainsKey(gameScriptType))
                             {
-                                _gameScriptEvents.Add(gameScriptType, new Dictionary<Constants.GameScriptEvent, Dictionary<GameScript, List<MethodInfo>>>());
+                                _gameScriptEvents.Add(gameScriptType, new Dictionary<GameScriptEvent, Dictionary<GameScript, List<MethodInfo>>>());
                             }
                             if (!_gameScriptEvents[gameScriptType].ContainsKey(gameScriptEventAttribute.Event))
                             {

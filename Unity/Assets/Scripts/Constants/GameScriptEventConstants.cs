@@ -40,7 +40,7 @@
         UpdateGameValueOwner,                   // void(GameObject)
         OnObjectMove,                           // void()
         OnObjectHasNoHitPoint,                  // void()
-        OnObjectDestroyed,                      // void()
+        OnObjectDisabled,                      // void()
         InterruptCharacter,                     // void()
         OnCharacterInterrupted,                 // void()
         OnCharacterKnockBacked,                 // void(Vector2, float)

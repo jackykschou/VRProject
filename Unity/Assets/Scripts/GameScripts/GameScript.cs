@@ -15,28 +15,24 @@ namespace Assets.Scripts.GameScripts
     public abstract class GameScript : MonoBehaviour
     {
         public string LabelName;
+
         public GameScriptManager GameScriptManager { get; set; }
 
-        private bool _firstTimeInitialized;
+        private bool FirstTimeInitialized { get; set; }
 
         public bool Initialized { get; private set; }
         public bool Deinitialized { get; private set; }
         public bool Disabled{ get; private set; }
         public bool Destroyed { get; private set; }
 
-
-        public virtual void EditorUpdate()
-        {
-        }
-
         public void TriggerGameScriptEvent(GameScriptEvent gameScriptEvent, params object[] args)
         {
-            StartCoroutine(TriggerGameScriptEventIe(gameScriptEvent, args));
+            StartCoroutine(TriggerGameScriptEventCoroutine(gameScriptEvent, args));
         }
 
-        IEnumerator TriggerGameScriptEventIe(GameScriptEvent gameScriptEvent, params object[] args)
+        private IEnumerator TriggerGameScriptEventCoroutine(GameScriptEvent gameScriptEvent, params object[] args)
         {
-            while (GameScriptManager == null || !GameScriptManager.Initialized)
+            while (GameScriptManager == null)
             {
                 yield return new WaitForSeconds(Time.deltaTime);
             }
@@ -44,7 +40,7 @@ namespace Assets.Scripts.GameScripts
             gameObject.TriggerGameScriptEvent(gameScriptEvent, args);
         }
 
-        public void TriggerGameEvent(GameEvent gameEvent, params System.Object[] args)
+        public void TriggerGameEvent(GameEvent gameEvent, params object[] args)
         {
             GameEventManager.Instance.TriggerGameEvent(gameEvent, args);
         }
@@ -71,7 +67,7 @@ namespace Assets.Scripts.GameScripts
                 return;
             }
 
-            if (!_firstTimeInitialized)
+            if (!FirstTimeInitialized)
             {
                 GameScriptManager = GetComponent<GameScriptManager>();
                 GameScriptManager.UpdateGameScriptEvents(this);
@@ -81,10 +77,9 @@ namespace Assets.Scripts.GameScripts
 
             Initialize();
 
-            if (!_firstTimeInitialized)
+            if (!FirstTimeInitialized)
             {
-                gameObject.CacheGameObject();
-                _firstTimeInitialized = true;
+                FirstTimeInitialized = true;
             }
 
             Deinitialized = false;
@@ -123,22 +118,26 @@ namespace Assets.Scripts.GameScripts
         void OnDestroy()
         {
             DeinitializeHelper();
+            if (!PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
+            {
+                UnsubscribeGameEvents();
+            }
         }
 
-        void DeinitializeHelper()
+        private void DeinitializeHelper()
         {
             if (Deinitialized || !Initialized)
             {
                 return;
             }
 
-            if (Disabled && !PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
-            {
-                UnsubscribeGameEvents();
-                gameObject.UncacheGameObject();
-            }
+            Disabled = true;
+            GameScriptManager.Disabled = true;
+            TriggerGameScriptEvent(GameScriptEvent.OnObjectDisabled);
 
             Deinitialize();
+            Destroyed = true;
+            GameScriptManager.Destroyed = true;
             Initialized = false;
             Deinitialized = true;
         }
@@ -160,10 +159,10 @@ namespace Assets.Scripts.GameScripts
 
         public void DisableGameObject(float delay = 0f)
         {
-            StartCoroutine(DisableGameObjectIE(delay));
+            StartCoroutine(DisableGameObjectCoroutine(delay));
         }
 
-        IEnumerator DisableGameObjectIE(float delay)
+        private IEnumerator DisableGameObjectCoroutine(float delay)
         {
             if (delay > 0f)
             {
@@ -174,16 +173,10 @@ namespace Assets.Scripts.GameScripts
 
         public void ImmediateDisableGameObject()
         {
-            if (!gameObject.activeSelf || Destroyed || GameScriptManager.Destroyed)
+            if (GameScriptManager.Disabled)
             {
                 return;
             }
-
-            Destroyed = true;
-
-            TriggerGameScriptEvent(GameScriptEvent.OnObjectDestroyed);
-
-            Disabled = true;
 
             if (PrefabManager.Instance.IsSpawnedFromPrefab(gameObject))
             {
@@ -208,6 +201,10 @@ namespace Assets.Scripts.GameScripts
         }
 
         protected virtual void FixedUpdate()
+        {
+        }
+
+        public virtual void EditorUpdate()
         {
         }
 

@@ -10,20 +10,15 @@ namespace Assets.Scripts.Managers
     {
         public static GameEventManager Instance { get { return _instance; } }
 
-        private Dictionary<GameEvent, Dictionary<GameScript, List<MethodInfo>>> _gameEvents;
+        private readonly Dictionary<GameEvent, Dictionary<GameScript, List<MethodInfo>>> _gameEvents = new Dictionary<GameEvent, Dictionary<GameScript, List<MethodInfo>>>();
 
         private static readonly GameEventManager _instance = new GameEventManager();
-
-        GameEventManager()
-        {
-            _gameEvents = new Dictionary<GameEvent, Dictionary<GameScript, List<MethodInfo>>>();
-        }
 
         public void TriggerGameEvent(GameEvent gameEvent, params System.Object[] args)
         {
             if (gameEvent != GameEvent.OnGameEventSent)
             {
-                TriggerGameEventSent(GameEvent.OnGameEventSent, gameEvent);
+                TriggerGameEventLogic(GameEvent.OnGameEventSent, gameEvent);
             }
 
             if (!_gameEvents.ContainsKey(gameEvent))
@@ -31,12 +26,17 @@ namespace Assets.Scripts.Managers
                 return;
             }
 
+            TriggerGameEventLogic(gameEvent, args);
+        }
+
+        private void TriggerGameEventLogic(GameEvent gameEvent, params System.Object[] args)
+        {
             var dict = _gameEvents[gameEvent];
             int originalCount = dict.Count;
             for (int i = 0; i < dict.Count; ++i)
             {
                 GameScript key = dict.Keys.ElementAt(i);
-                if (key.GameScriptManager.Initialized && !key.GameScriptManager.Disabled)
+                if (key.GameScriptManager.Initialized && !key.GameScriptManager.Destroyed)
                 {
                     dict[key].ForEach(m => m.Invoke(key, args));
                 }
@@ -47,27 +47,6 @@ namespace Assets.Scripts.Managers
                 }
             }
         }
-
-        private void TriggerGameEventSent(GameEvent gameEvent, params System.Object[] args)
-        {
-            if (!_gameEvents.ContainsKey(gameEvent))
-            {
-                return;
-            }
-
-            var dict = _gameEvents[gameEvent];
-            int originalCount = dict.Count;
-            for (int i = 0; i < dict.Count; ++i)
-            {
-                var key = dict.Keys.ElementAt(i);
-                dict[key].ForEach(m => m.Invoke(key, args));
-                if (dict.Count != originalCount)
-                {
-                    originalCount = dict.Count;
-                    --i;
-                }
-            }
-        } 
 
         public void SubscribeGameEvent(GameScript subscriber, GameEvent gameEvent, MethodInfo info)
         {

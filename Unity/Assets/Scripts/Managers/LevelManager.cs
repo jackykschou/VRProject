@@ -39,8 +39,8 @@ namespace Assets.Scripts.Managers
 
             if (!GameManager.Instance.LoadLevelOnStart)
             {
-                GameEventManager.Instance.TriggerGameEvent(GameEvent.OnLevelFinishedLoading);
-                GameEventManager.Instance.TriggerGameEvent(GameEvent.OnLevelStarted);
+                TriggerGameEvent(GameEvent.OnLevelFinishedLoading);
+                TriggerGameEvent(GameEvent.OnLevelStarted);
             }
         }
 

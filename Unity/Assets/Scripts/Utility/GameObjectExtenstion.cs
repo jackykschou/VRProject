@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Constants;
-using Assets.Scripts.GameScripts;
 using Assets.Scripts.GameScripts.GameLogic;
 using Assets.Scripts.GameScripts.GameLogic.Health;
 using Assets.Scripts.GameScripts.GameLogic.Misc;
@@ -20,15 +19,15 @@ namespace Assets.Scripts.Utility
             Health health = o.GetComponent<Health>();
             CharacterInterrupt characterInterrupt = o.GetComponent<CharacterInterrupt>();
 
-            if (gameScriptManager != null && !GameScriptEventManagersCache.ContainsKey(o))
+            if (gameScriptManager != null)
             {
                 GameScriptEventManagersCache.Add(o, gameScriptManager);
             }
-            if (health != null && !HealthCache.ContainsKey(o))
+            if (health != null)
             {
                 HealthCache.Add(o, health);
             }
-            if (characterInterrupt != null && !OnHitInterruptCache.ContainsKey(o))
+            if (characterInterrupt != null)
             {
                 OnHitInterruptCache.Add(o, characterInterrupt);
             }
