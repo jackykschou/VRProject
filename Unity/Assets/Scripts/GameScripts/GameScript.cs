@@ -22,21 +22,10 @@ namespace Assets.Scripts.GameScripts
 
         public bool Initialized { get; private set; }
         public bool Deinitialized { get; private set; }
-        public bool Disabled{ get; private set; }
         public bool Destroyed { get; private set; }
 
         public void TriggerGameScriptEvent(GameScriptEvent gameScriptEvent, params object[] args)
         {
-            StartCoroutine(TriggerGameScriptEventCoroutine(gameScriptEvent, args));
-        }
-
-        private IEnumerator TriggerGameScriptEventCoroutine(GameScriptEvent gameScriptEvent, params object[] args)
-        {
-            while (GameScriptManager == null)
-            {
-                yield return new WaitForSeconds(Time.deltaTime);
-            }
-
             gameObject.TriggerGameScriptEvent(gameScriptEvent, args);
         }
 
@@ -84,7 +73,6 @@ namespace Assets.Scripts.GameScripts
 
             Deinitialized = false;
             Initialized = true;
-            Disabled = false;
             Destroyed = false;
 
             GameScriptManager.UpdateInitialized();
@@ -131,7 +119,6 @@ namespace Assets.Scripts.GameScripts
                 return;
             }
 
-            Disabled = true;
             GameScriptManager.Disabled = true;
             TriggerGameScriptEvent(GameScriptEvent.OnObjectDisabled);
 
@@ -209,21 +196,27 @@ namespace Assets.Scripts.GameScripts
         }
 
         protected virtual void OnTriggerEnter2D(Collider2D coll)
-        { }
+        {
+        }
 
         protected virtual void OnTriggerStay2D(Collider2D coll)
-        { }
+        {
+        }
 
         protected virtual void OnTriggerExit2D(Collider2D coll)
-        { }
+        {
+        }
 
         protected virtual void OnCollisionEnter2D(Collision2D coll)
-        { }
+        {
+        }
 
         protected virtual void OnCollisionStay2D(Collision2D coll)
-        { }
+        {
+        }
 
         protected virtual void OnCollisionExit2D(Collision2D coll)
-        { }
+        {
+        }
     }
 }

@@ -42,16 +42,6 @@ namespace Assets.Scripts.GameScripts.GameLogic
                 return;
             }
 
-            StartCoroutine(TriggerGameScriptEventCoroutine(gameScriptEvent, args));
-        }
-
-        private IEnumerator TriggerGameScriptEventCoroutine(GameScriptEvent gameScriptEvent, params object[] args)
-        {
-            while (!Initialized)
-            {
-                yield return new WaitForSeconds(Time.deltaTime);
-            }
-
             foreach (var value in _gameScriptEvents.Values)
             {
                 if (value.ContainsKey(gameScriptEvent))
