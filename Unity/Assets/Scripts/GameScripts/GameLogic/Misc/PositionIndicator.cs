@@ -1,9 +1,9 @@
 ﻿using System;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Constants;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Misc
 {
@@ -56,7 +56,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Misc
             _currentFacingDirection = FacingDirection.Down;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.UpdateFacingDirection)]
+        [GameScriptEvent(GameScriptEvent.UpdateFacingDirection)]
         public void UpdatePosition(FacingDirection facingDirection)
         {
             _currentFacingDirection = facingDirection;

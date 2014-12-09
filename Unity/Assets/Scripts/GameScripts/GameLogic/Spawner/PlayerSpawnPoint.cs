@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.Managers;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.Managers;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Spawner
 {
@@ -10,7 +10,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Spawner
         {
         }
 
-        [GameEventAttribute(GameEvent.OnLevelFinishedLoading)]
+        [GameEvent(GameEvent.OnLevelFinishedLoading)]
         public void SpawnPlayer()
         {
             GameManager.Instance.PlayerMainCharacter.transform.position = transform.position;

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObjectives
 {
@@ -15,7 +15,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObj
         private const float StartTrackObjectivesDelay = 1.5f;
         private const float TrackObjectivesInterval = 1.0f;
 
-        [GameEventAttribute(GameEvent.OnLevelEnded)]
+        [GameEvent(GameEvent.OnLevelEnded)]
         public void OnLevelEnded()
         {
             TriggerGameEvent(GameEvent.OnSectionObjectivesCompleted, SectionId);
@@ -37,7 +37,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObj
                 CancelInvoke();
                 return;
             }
-            if (Objectives.All(o => o.ObjectiveCompleted()) && !GameScriptEventManager.Destroyed)
+            if (Objectives.All(o => o.ObjectiveCompleted()) && !GameScriptManager.Destroyed)
             {
                 CancelInvoke();
                 TriggerGameEvent(GameEvent.OnSectionObjectivesCompleted, SectionId);

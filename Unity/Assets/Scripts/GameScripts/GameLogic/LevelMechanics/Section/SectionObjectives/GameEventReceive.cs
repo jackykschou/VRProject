@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObjectives
 {
@@ -37,7 +37,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObj
             return _receiveCount >= ReceiveGoal;
         }
 
-        [GameEventAttribute(GameEvent.OnGameEventSent)]
+        [GameEvent(GameEvent.OnGameEventSent)]
         public void OnGameEventSent(GameEvent gameEventName)
         {
             if (gameEventName == Event && SectionActivated)

@@ -1,6 +1,6 @@
-﻿using UnityEngine.UI;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine.UI;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.GUI
 {
@@ -26,7 +26,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
         {
         }
 
-        [GameEventAttribute(GameEvent.OnSectionEnemyDespawned)]
+        [GameEvent(GameEvent.OnSectionEnemyDespawned)]
         public void IncreaseCount(int sectionId)
         {
             _currentKillCount++;
@@ -34,7 +34,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
                 KillCountText.text = _currentKillCount.ToString();
         }
 
-        [GameEventAttribute(GameEvent.WaveCountIncreased)]
+        [GameEvent(GameEvent.WaveCountIncreased)]
         public void WaveCountUpdate(int count)
         {
             _currentWaveNumber = count;

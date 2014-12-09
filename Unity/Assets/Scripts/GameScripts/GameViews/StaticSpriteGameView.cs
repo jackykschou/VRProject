@@ -111,12 +111,7 @@ namespace Assets.Scripts.GameScripts.GameViews
             }
         }
 
-        protected void UpdateSortingOrder()
-        {
-            Render.sortingOrder = (int)(transform.position.y * WorldScaleConstant.LayerSortingScale);
-        }
-
-        [Attributes.GameScriptEvent(GameScriptEvent.OnObjectDestroyed)]
+        [Attributes.GameScriptEvent(GameScriptEvent.OnObjectDisabled)]
         public void DisableRender()
         {
             renderer.enabled = false;

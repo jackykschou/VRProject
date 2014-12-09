@@ -1,10 +1,9 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Managers;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
 {
@@ -20,7 +19,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
             }
         }
 
-        [GameEventAttribute(GameEvent.OnSectionObjectivesCompleted)]
+        [GameEvent(GameEvent.OnSectionObjectivesCompleted)]
         public void OnSectionObjectivesCompleted(int sectionId)
         {
             if (sectionId == SectionId)
@@ -29,8 +28,8 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
             }
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.SurvivalAreaSpawned)]
-        [GameEventAttribute(GameEvent.OnLevelStarted)]
+        [GameScriptEvent(GameScriptEvent.SurvivalAreaSpawned)]
+        [GameEvent(GameEvent.OnLevelStarted)]
         public void UpdateSectionId()
         {
             TriggerGameScriptEvent(GameScriptEvent.UpdateSectionId, SectionId);

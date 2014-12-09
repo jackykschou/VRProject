@@ -22,11 +22,6 @@ namespace Assets.Scripts.GameScripts.GameViews
             UpdateSortingOrder();
         }
 
-        protected void UpdateSortingOrder()
-        {
-            _ParticleSystem.renderer.sortingOrder = (int)(transform.position.y * WorldScaleConstant.LayerSortingScale);
-        }
-
         protected override void Deinitialize()
         {
         }

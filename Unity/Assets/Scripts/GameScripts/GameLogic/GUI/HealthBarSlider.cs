@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using UnityEngine.UI;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.GUI
 {
@@ -24,7 +24,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
         {
         }
 
-        [GameEventAttribute(GameEvent.PlayerHealthUpdate)]
+        [GameEvent(GameEvent.PlayerHealthUpdate)]
         public void UpdateHealth(float percentage)
         {
             _healthBar.value = percentage;

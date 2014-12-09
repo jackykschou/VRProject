@@ -1,7 +1,6 @@
-﻿using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
+﻿using Assets.Scripts.Attributes;
+using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
 {
@@ -16,13 +15,13 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
             SectionActivated = false;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.UpdateSectionId)]
+        [GameScriptEvent(GameScriptEvent.UpdateSectionId)]
         public void UpdateSectionId(int id)
         {
             SectionId = id;
         }
 
-        [GameEventAttribute(GameEvent.OnSectionActivated)]
+        [GameEvent(GameEvent.OnSectionActivated)]
         public virtual void OnSectionActivated(int sectionId)
         {
             if (sectionId == SectionId)
@@ -31,7 +30,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section
             }
         }
 
-        [GameEventAttribute(GameEvent.OnSectionDeactivated)]
+        [GameEvent(GameEvent.OnSectionDeactivated)]
         public virtual void OnSectionDeactivated(int sectionId)
         {
             if (sectionId == SectionId)

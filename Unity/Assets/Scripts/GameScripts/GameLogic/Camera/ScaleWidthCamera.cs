@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Camera
 {
@@ -21,7 +21,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Camera
         }
 
         
-        [GameEventAttribute(GameEvent.SetCameraWidth)]
+        [GameEvent(GameEvent.SetCameraWidth)]
         public void SetCameraWidth(float pixelDensity)
         {
             _targetWidth = pixelDensity;

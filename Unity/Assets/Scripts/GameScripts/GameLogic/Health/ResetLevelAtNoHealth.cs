@@ -1,9 +1,9 @@
 ﻿using System.Collections;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Managers;
 using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Health
 {
@@ -31,7 +31,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Health
         {
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnObjectHasNoHitPoint)]
+        [GameScriptEvent(GameScriptEvent.OnObjectHasNoHitPoint)]
         public void ResetLevel()
         {
             if (_reset)

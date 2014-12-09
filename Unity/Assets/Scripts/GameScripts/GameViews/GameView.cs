@@ -5,8 +5,11 @@ using UnityEngine;
 namespace Assets.Scripts.GameScripts.GameViews
 {
     [AddComponentMenu("GameView/GameView")]
+    [RequireComponent(typeof(Renderer))]
     public abstract class GameView : GameScript
     {
+        public Renderer Renderer;
+
         public FacingDirection FacingDirection { get; private set; }
 
         protected override void Initialize()
@@ -53,6 +56,11 @@ namespace Assets.Scripts.GameScripts.GameViews
         public void UpdateFacingDirection(FacingDirection facingDirection)
         {
             FacingDirection = facingDirection;
+        }
+
+        protected void UpdateSortingOrder()
+        {
+            Renderer.sortingOrder = (int)(transform.position.y * WorldScaleConstant.LayerSortingScale);
         }
     }
 }

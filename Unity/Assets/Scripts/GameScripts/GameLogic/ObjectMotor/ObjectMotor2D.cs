@@ -1,8 +1,8 @@
-﻿using Assets.Scripts.GameScripts.GameLogic.GameValue;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.GameScripts.GameLogic.GameValue;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.ObjectMotor
 {
@@ -92,13 +92,13 @@ namespace Assets.Scripts.GameScripts.GameLogic.ObjectMotor
             TriggerGameScriptEvent(GameScriptEvent.OnObjectMove);
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.ChangeObjectMotorSpeed)]
+        [GameScriptEvent(GameScriptEvent.ChangeObjectMotorSpeed)]
         public void ChangeSpeed(GameValueChanger speedChanger)
         {
             Speed.ChangeGameValue(speedChanger);
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.UnchangeObjectMotorSpeed)]
+        [GameScriptEvent(GameScriptEvent.UnchangeObjectMotorSpeed)]
         public void UnchangeSpeed(GameValueChanger speedChanger)
         {
             Speed.UnchangeGameValue(speedChanger);

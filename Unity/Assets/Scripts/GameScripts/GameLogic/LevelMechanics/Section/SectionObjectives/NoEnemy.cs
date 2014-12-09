@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Attributes;
+using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObjectives
 {
@@ -33,7 +33,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObj
             }
         }
 
-        [GameEventAttribute(GameEvent.OnSectionEnemySpawned)]
+        [GameEvent(GameEvent.OnSectionEnemySpawned)]
         public void OnSectionEnemySpawned(int sectionId)
         {
             if (sectionId == SectionId)
@@ -42,7 +42,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.LevelMechanics.Section.SectionObj
             }
         }
 
-        [GameEventAttribute(GameEvent.OnSectionEnemyDespawned)]
+        [GameEvent(GameEvent.OnSectionEnemyDespawned)]
         public void OnSectionEnemyDespawned(int sectionId)
         {
             if (sectionId == SectionId)

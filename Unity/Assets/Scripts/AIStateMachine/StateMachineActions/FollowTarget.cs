@@ -4,7 +4,6 @@ using StateMachine.Action;
 using Assets.Scripts.GameScripts.GameLogic.AILogic;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.AIStateMachine.StateMachineActions
 {

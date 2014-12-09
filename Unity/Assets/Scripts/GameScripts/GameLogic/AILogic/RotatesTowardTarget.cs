@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.Constants;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.Constants;
 using Assets.Scripts.GameScripts.GameLogic.Skills.SkillCasters;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.AILogic
 {
@@ -20,13 +20,13 @@ namespace Assets.Scripts.GameScripts.GameLogic.AILogic
             _skillCaster = GetComponent<SkillCaster>();
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnNewTargetDiscovered)]
+        [GameScriptEvent(GameScriptEvent.OnNewTargetDiscovered)]
         public void UpdateTarget(GameObject target)
         {
             Target = target.transform;
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.RotateTowardsTarget)]
+        [GameScriptEvent(GameScriptEvent.RotateTowardsTarget)]
         public void RotateTowardsTarget()
         {
             if (Target == null)

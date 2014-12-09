@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.GameScripts.GameLogic.Input;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.GameScripts.GameLogic.Input;
 using Assets.Scripts.GameScripts.GameLogic.Skills.SkillCasters;
 using Assets.Scripts.Utility;
 using UnityEngine;
 using GameEvent = Assets.Scripts.Constants.GameEvent;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Controller
 {
@@ -117,7 +117,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Controller
             }
         }
 
-        [GameEventAttribute(GameEvent.EnableAbility)]
+        [GameEvent(GameEvent.EnableAbility)]
         public void EnableAbility(int id)
         {
             switch (id)
@@ -137,7 +137,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Controller
             }
         }
 
-        [GameEventAttribute(GameEvent.DisableAbility)]
+        [GameEvent(GameEvent.DisableAbility)]
         public void DisableAbility(int id)
         {
             switch (id)
@@ -157,14 +157,14 @@ namespace Assets.Scripts.GameScripts.GameLogic.Controller
             }
         }
 
-        [GameEventAttribute(GameEvent.EnablePlayerCharacter)]
+        [Attributes.GameEvent(GameEvent.EnablePlayerCharacter)]
         public void EnablePlayerCharacter()
         {
             ControllerEnabled = true;
             GetComponent<Collider2D>().enabled = true;
         }
 
-        [GameEventAttribute(GameEvent.DisablePlayerCharacter)]
+        [GameEvent(GameEvent.DisablePlayerCharacter)]
         public void DisablePlayerCharacter()
         {
             ControllerEnabled = false;

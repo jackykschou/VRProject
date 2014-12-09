@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.GameScripts.GameLogic.GameValue;
+﻿using Assets.Scripts.Attributes;
+using Assets.Scripts.GameScripts.GameLogic.GameValue;
 using UnityEngine;
 using GameScriptEvent = Assets.Scripts.Constants.GameScriptEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.Misc
 {
@@ -16,7 +16,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Misc
 
         private float _accumulatedHitDamage;
 
-        [GameScriptEventAttribute(GameScriptEvent.OnObjectTakeDamage)]
+        [GameScriptEvent(GameScriptEvent.OnObjectTakeDamage)]
         public void UpdateDamageThreshold(float damage, bool crit, GameValue.GameValue health, GameValueChanger gameValueChanger)
         {
             if (HitDamageThresholdResetTime.CanDispatch())
@@ -41,7 +41,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Misc
             HitDamageThresholdResetTime.ResetTime();
         }
 
-        [GameScriptEventAttribute(GameScriptEvent.OnCharacterInterrupted)]
+        [GameScriptEvent(GameScriptEvent.OnCharacterInterrupted)]
         public void ResetAccumulatedHitDamage()
         {
             _accumulatedHitDamage = 0f;

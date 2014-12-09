@@ -9,7 +9,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.Misc
     {
         public Prefab Prefab;
 
-        [Attributes.GameScriptEvent(GameScriptEvent.OnObjectDestroyed)]
+        [Attributes.GameScriptEvent(GameScriptEvent.OnObjectDisabled)]
         public void OnObjectDestroyed()
         {
             PrefabManager.Instance.SpawnPrefabImmediate(Prefab, transform.position);

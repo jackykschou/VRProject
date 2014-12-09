@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Constants;
-using Assets.Scripts.GameScripts;
 using Assets.Scripts.GameScripts.GameLogic;
 using Assets.Scripts.GameScripts.GameLogic.Health;
 using Assets.Scripts.GameScripts.GameLogic.Misc;
@@ -10,25 +9,25 @@ namespace Assets.Scripts.Utility
 {
     public static class GameObjectExtenstion
     {
-        public static readonly Dictionary<GameObject, GameScriptEventManager> GameScriptEventManagersCache = new Dictionary<GameObject, GameScriptEventManager>();
+        public static readonly Dictionary<GameObject, GameScriptManager> GameScriptEventManagersCache = new Dictionary<GameObject, GameScriptManager>();
         public static readonly Dictionary<GameObject, Health> HealthCache = new Dictionary<GameObject, Health>();
         public static readonly Dictionary<GameObject, CharacterInterrupt> OnHitInterruptCache = new Dictionary<GameObject, CharacterInterrupt>();
 
         public static void CacheGameObject(this GameObject o)
         {
-            GameScriptEventManager gameScriptEventManager = o.GetComponent<GameScriptEventManager>();
+            GameScriptManager gameScriptManager = o.GetComponent<GameScriptManager>();
             Health health = o.GetComponent<Health>();
             CharacterInterrupt characterInterrupt = o.GetComponent<CharacterInterrupt>();
 
-            if (gameScriptEventManager != null && !GameScriptEventManagersCache.ContainsKey(o))
+            if (gameScriptManager != null)
             {
-                GameScriptEventManagersCache.Add(o, gameScriptEventManager);
+                GameScriptEventManagersCache.Add(o, gameScriptManager);
             }
-            if (health != null && !HealthCache.ContainsKey(o))
+            if (health != null)
             {
                 HealthCache.Add(o, health);
             }
-            if (characterInterrupt != null && !OnHitInterruptCache.ContainsKey(o))
+            if (characterInterrupt != null)
             {
                 OnHitInterruptCache.Add(o, characterInterrupt);
             }

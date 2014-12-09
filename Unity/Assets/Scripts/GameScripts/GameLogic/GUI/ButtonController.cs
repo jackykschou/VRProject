@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Attributes;
 using Assets.Scripts.Constants;
 using Assets.Scripts.GameScripts.GameLogic.Input;
 using Assets.Scripts.Managers;
 using UnityEngine;
-using GameEventAttribute = Assets.Scripts.Attributes.GameEvent;
-using GameScriptEventAttribute = Assets.Scripts.Attributes.GameScriptEvent;
 
 namespace Assets.Scripts.GameScripts.GameLogic.GUI
 {
@@ -41,7 +40,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GUI
             _curButton = 0;
         }
 
-        [GameEventAttribute(GameEvent.OnLevelStarted)]
+        [GameEvent(GameEvent.OnLevelStarted)]
         public void AllowClicks()
         {
             StartCoroutine(AllowClicksIE());
