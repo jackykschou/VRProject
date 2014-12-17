@@ -14,7 +14,9 @@ namespace Assets.Scripts.GameScripts
     [RequireComponent(typeof(GameScriptManager))]
     public abstract class GameScript : MonoBehaviour
     {
+#if UNITY_EDITOR
         public string LabelName;
+#endif
 
         public GameScriptManager GameScriptManager { get; set; }
 
