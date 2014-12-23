@@ -193,7 +193,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                 switch (gameValueChanger.IntervalDurationType)
                                 {
                                     case GameValueChanger.ByIntervalChangeDurationType.FixedTime:
-                                        StartCoroutine(ChangeHealthFixedAmountByInterval(gameValueChanger, gameValueChanger.RawAmount,
+                                        StartCoroutine(ChangeCurrentValueFixedAmountByInterval(gameValueChanger, gameValueChanger.RawAmount,
                                             gameValueChanger.ChangeDuration, gameValueChanger.Stackable,
                                             gameValueChanger.NonStackableLabel,
                                             gameValueChanger.CriticalChance, gameValueChanger.CriticalPercentage,
@@ -201,7 +201,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                             gameValueChanger.AmountVariantPercentage));
                                         break;
                                     case GameValueChanger.ByIntervalChangeDurationType.Nondeterministic:
-                                        StartCoroutine(TempChangeHealthFixedAmountByInterval(gameValueChanger));
+                                        StartCoroutine(TempChangeCurrentValueFixedAmountByInterval(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -209,7 +209,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                 switch (gameValueChanger.IntervalDurationType)
                                 {
                                     case GameValueChanger.ByIntervalChangeDurationType.FixedTime:
-                                        StartCoroutine(ChangeHealthCurrentPercentageByInterval(gameValueChanger, 
+                                        StartCoroutine(ChangeCurrentValueCurrentPercentageByInterval(gameValueChanger, 
                                             gameValueChanger.RawAmount,
                                             gameValueChanger.ChangeDuration, gameValueChanger.Stackable,
                                             gameValueChanger.NonStackableLabel,
@@ -218,7 +218,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                             gameValueChanger.AmountVariantPercentage));
                                         break;
                                     case GameValueChanger.ByIntervalChangeDurationType.Nondeterministic:
-                                        StartCoroutine(TempChangeHealthCurrentPercentagetByInterval(gameValueChanger));
+                                        StartCoroutine(TempChangeCurrentValueCurrentPercentagetByInterval(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -226,7 +226,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                 switch (gameValueChanger.IntervalDurationType)
                                 {
                                     case GameValueChanger.ByIntervalChangeDurationType.FixedTime:
-                                        StartCoroutine(ChangeHealthMaxPercentageByInterval(gameValueChanger, 
+                                        StartCoroutine(ChangeCurrentValueMaxPercentageByInterval(gameValueChanger, 
                                             gameValueChanger.RawAmount,
                                             gameValueChanger.ChangeDuration, gameValueChanger.Stackable,
                                             gameValueChanger.NonStackableLabel,
@@ -235,7 +235,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                             gameValueChanger.AmountVariantPercentage));
                                         break;
                                     case GameValueChanger.ByIntervalChangeDurationType.Nondeterministic:
-                                        StartCoroutine(TempChangeHealthMaxPercentageByInterval(gameValueChanger));
+                                        StartCoroutine(TempChangeCurrentValueMaxPercentageByInterval(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -403,7 +403,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
             TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, -amount, crited);
         }
 
-        private IEnumerator ChangeHealthFixedAmountByInterval(GameValueChanger gameValueChanger, float amount, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
+        private IEnumerator ChangeCurrentValueFixedAmountByInterval(GameValueChanger gameValueChanger, float amount, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
             float critChance, float critPercentage, float interval, float variantPercentage)
         {
             if (!stackable && _nonStackableTypeCache.ContainsKey(nonStackableType))
@@ -428,7 +428,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator TempChangeHealthFixedAmountByInterval(GameValueChanger gameValueChanger)
+        private IEnumerator TempChangeCurrentValueFixedAmountByInterval(GameValueChanger gameValueChanger)
         {
             if (!gameValueChanger.Stackable && _nonStackableTypeCache.ContainsKey(gameValueChanger.NonStackableLabel))
             {
@@ -456,7 +456,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator ChangeHealthCurrentPercentageByInterval(GameValueChanger gameValueChanger, float percentage, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
+        private IEnumerator ChangeCurrentValueCurrentPercentageByInterval(GameValueChanger gameValueChanger, float percentage, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
             float critChance, float critPercentage, float interval, float variantPercentage)
         {
             if (!stackable && _nonStackableTypeCache.ContainsKey(nonStackableType))
@@ -481,7 +481,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator TempChangeHealthCurrentPercentagetByInterval(GameValueChanger gameValueChanger)
+        private IEnumerator TempChangeCurrentValueCurrentPercentagetByInterval(GameValueChanger gameValueChanger)
         {
             if (!gameValueChanger.Stackable && _nonStackableTypeCache.ContainsKey(gameValueChanger.NonStackableLabel))
             {
@@ -509,7 +509,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator ChangeHealthMaxPercentageByInterval(GameValueChanger gameValueChanger, float percentage, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
+        private IEnumerator ChangeCurrentValueMaxPercentageByInterval(GameValueChanger gameValueChanger, float percentage, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
             float critChance, float critPercentage, float interval, float variantPercentage)
         {
             if (!stackable && _nonStackableTypeCache.ContainsKey(nonStackableType))
@@ -534,7 +534,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator TempChangeHealthMaxPercentageByInterval(GameValueChanger gameValueChanger)
+        private IEnumerator TempChangeCurrentValueMaxPercentageByInterval(GameValueChanger gameValueChanger)
         {
             if (!gameValueChanger.Stackable && _nonStackableTypeCache.ContainsKey(gameValueChanger.NonStackableLabel))
             {
