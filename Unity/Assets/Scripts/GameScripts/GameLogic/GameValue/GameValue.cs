@@ -151,10 +151,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                 switch (gameValueChanger.OneTimeDurationType)
                                 {
                                     case GameValueChanger.OneTimeChangeDurationType.Permanent:
-                                        float amount = gameValueChanger.Amount;
-                                        amount = GetEmphasizedChange(amount);
-                                        Value += amount;
-                                        TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+                                        PermanentChangeCurrentValueFixed(gameValueChanger);
                                         break;
                                     case GameValueChanger.OneTimeChangeDurationType.Nondeterministic:
                                         StartCoroutine(TempChangeCurrentValue(gameValueChanger, gameValueChanger.Amount, gameValueChanger.LastAmountCrited));
@@ -168,11 +165,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                 switch (gameValueChanger.OneTimeDurationType)
                                 {
                                     case GameValueChanger.OneTimeChangeDurationType.Permanent:
-                                        float amount = gameValueChanger.Amount;
-                                        amount = GetEmphasizedChange(amount);
-                                        amount = Value * amount;
-                                        Value += amount;
-                                        TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+                                        PermanentChangeCurrentValueCurrentPercentage(gameValueChanger);
                                         break;
                                     case GameValueChanger.OneTimeChangeDurationType.Nondeterministic:
                                         StartCoroutine(TempChangeCurrentValue(gameValueChanger, Value * gameValueChanger.Amount, gameValueChanger.LastAmountCrited));
@@ -186,11 +179,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                 switch (gameValueChanger.OneTimeDurationType)
                                 {
                                     case GameValueChanger.OneTimeChangeDurationType.Permanent:
-                                        float amount = gameValueChanger.Amount;
-                                        amount = GetEmphasizedChange(amount);
-                                        amount = amount * Max;
-                                        Value += amount;
-                                        TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+                                        PermanentChangeCurrentValueMaxPercentage(gameValueChanger);
                                         break;
                                     case GameValueChanger.OneTimeChangeDurationType.Nondeterministic:
                                         StartCoroutine(TempChangeCurrentValue(gameValueChanger, Max * gameValueChanger.Amount, gameValueChanger.LastAmountCrited));
@@ -290,6 +279,27 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                 return;
             }
             _valueTempChangeValueCache.Remove(gameValueChanger);
+        }
+
+        private void PermanentChangeCurrentValueFixed(GameValueChanger gameValueChanger)
+        {
+            float amount = GetEmphasizedChange(gameValueChanger.Amount);
+            Value += amount;
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+        }
+
+        private void PermanentChangeCurrentValueCurrentPercentage(GameValueChanger gameValueChanger)
+        {
+            float amount = GetEmphasizedChange(Value * gameValueChanger.Amount);
+            Value += amount;
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+        }
+
+        private void PermanentChangeCurrentValueMaxPercentage(GameValueChanger gameValueChanger)
+        {
+            float amount = GetEmphasizedChange(Max * gameValueChanger.Amount);
+            Value += amount;
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
         }
 
         private IEnumerator TempChangeCurrentValueFixed(GameValueChanger gameValueChanger)
