@@ -25,7 +25,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
 
         private float _value;
         private List<GameValueChanger> _valueTempChangeValueCache;
-        private List<GameValueChanger.NonStackableType> _nonStackableTypeCache;
+        private Dictionary<GameValueChanger.NonStackableType, float> _nonStackableTypeCache;
 
         public float Value 
         {
@@ -107,7 +107,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
         protected override void Initialize()
         {
             _valueTempChangeValueCache = new List<GameValueChanger>();
-            _nonStackableTypeCache = new List<GameValueChanger.NonStackableType>();
+            _nonStackableTypeCache = new Dictionary<GameValueChanger.NonStackableType, float>();
             PositiveChangeEmphasizePercentage = _initialPositiveChangeEmphasizePercentage;
             NegativeChangeEmphasizePercentage = _initialNegativeChangeEmphasizePercentage;
             if (Mathf.Approximately(InitialMaxValue, 0) && Mathf.Approximately(InitialMinValue, 0) &&
@@ -132,7 +132,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
         {
             if (amount >= 0f)
             {
-                return amount + amount  *PositiveChangeEmphasizePercentage;
+                return amount + amount * PositiveChangeEmphasizePercentage;
             }
             else
             {
@@ -160,7 +160,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                         StartCoroutine(TempChangeCurrentValue(gameValueChanger, gameValueChanger.Amount, gameValueChanger.LastAmountCrited));
                                         break;
                                     case GameValueChanger.OneTimeChangeDurationType.TempFixedTime:
-                                        StartCoroutine(TempChangeCurrentValue(gameValueChanger, gameValueChanger.Amount, gameValueChanger.ChangeDuration, gameValueChanger.LastAmountCrited));
+                                        StartCoroutine(TempChangeCurrentValueFixed(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -178,7 +178,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                         StartCoroutine(TempChangeCurrentValue(gameValueChanger, Value * gameValueChanger.Amount, gameValueChanger.LastAmountCrited));
                                         break;
                                     case GameValueChanger.OneTimeChangeDurationType.TempFixedTime:
-                                        StartCoroutine(TempChangeCurrentValue(gameValueChanger, Value * gameValueChanger.Amount, gameValueChanger.ChangeDuration, gameValueChanger.LastAmountCrited));
+                                        StartCoroutine(TempChangeCurrentValueCurrentPercentage(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -196,7 +196,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                         StartCoroutine(TempChangeCurrentValue(gameValueChanger, Max * gameValueChanger.Amount, gameValueChanger.LastAmountCrited));
                                         break;
                                     case GameValueChanger.OneTimeChangeDurationType.TempFixedTime:
-                                        StartCoroutine(TempChangeCurrentValue(gameValueChanger, Max * gameValueChanger.Amount, gameValueChanger.ChangeDuration, gameValueChanger.LastAmountCrited));
+                                        StartCoroutine(TempChangeCurrentValueMaxPercentage(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -212,7 +212,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                             gameValueChanger.AmountVariantPercentage));
                                         break;
                                     case GameValueChanger.ByIntervalChangeDurationType.Nondeterministic:
-                                        StartCoroutine(ChangeHealthFixedAmountByInterval(gameValueChanger));
+                                        StartCoroutine(TempChangeHealthFixedAmountByInterval(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -229,7 +229,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                             gameValueChanger.AmountVariantPercentage));
                                         break;
                                     case GameValueChanger.ByIntervalChangeDurationType.Nondeterministic:
-                                        StartCoroutine(ChangeHealthCurrentPercentagetByInterval(gameValueChanger));
+                                        StartCoroutine(TempChangeHealthCurrentPercentagetByInterval(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -246,7 +246,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                                             gameValueChanger.AmountVariantPercentage));
                                         break;
                                     case GameValueChanger.ByIntervalChangeDurationType.Nondeterministic:
-                                        StartCoroutine(ChangeHealthMaxPercentageByInterval(gameValueChanger));
+                                        StartCoroutine(TempChangeHealthMaxPercentageByInterval(gameValueChanger));
                                         break;
                                 }
                                 break;
@@ -287,20 +287,39 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
         {
             if (!_valueTempChangeValueCache.Contains(gameValueChanger))
             {
-                Debug.Log("GameValueChanger does not exist");
                 return;
             }
             _valueTempChangeValueCache.Remove(gameValueChanger);
         }
 
-        private IEnumerator TempChangeCurrentValue(GameValueChanger gameValueChanger, float amount, float time, bool crited)
+        private IEnumerator TempChangeCurrentValueFixed(GameValueChanger gameValueChanger)
         {
-            amount = GetEmphasizedChange(amount);
+            float amount = GetEmphasizedChange(gameValueChanger.Amount);
             Value += amount;
-            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, crited);
-            yield return new WaitForSeconds(time);
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+            yield return new WaitForSeconds(gameValueChanger.ChangeDuration);
             Value -= amount;
-            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, -amount, crited);
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, -amount, gameValueChanger.LastAmountCrited);
+        }
+
+        private IEnumerator TempChangeCurrentValueCurrentPercentage(GameValueChanger gameValueChanger)
+        {
+            float amount = GetEmphasizedChange(gameValueChanger.Amount * Value);
+            Value += amount;
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+            yield return new WaitForSeconds(gameValueChanger.ChangeDuration);
+            Value -= amount;
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, -amount, gameValueChanger.LastAmountCrited);
+        }
+
+        private IEnumerator TempChangeCurrentValueMaxPercentage(GameValueChanger gameValueChanger)
+        {
+            float amount = GetEmphasizedChange(gameValueChanger.Amount * Max);
+            Value += amount;
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, gameValueChanger.LastAmountCrited);
+            yield return new WaitForSeconds(gameValueChanger.ChangeDuration);
+            Value -= amount;
+            TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, -amount, gameValueChanger.LastAmountCrited);
         }
 
         private IEnumerator TempChangeMax(float amount, float time)
@@ -321,7 +340,6 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
         {
             if (_valueTempChangeValueCache.Contains(gameValueChanger))
             {
-                Debug.Log("GameValueChanger already exists");
                 yield break;
             }
             Min += amount;
@@ -337,7 +355,6 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
         {
             if (_valueTempChangeValueCache.Contains(gameValueChanger))
             {
-                Debug.Log("GameValueChanger already exists");
                 yield break;
             }
             Max += amount;
@@ -351,11 +368,18 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
 
         private IEnumerator TempChangeCurrentValue(GameValueChanger gameValueChanger, float amount, bool crited)
         {
-            if (_valueTempChangeValueCache.Contains(gameValueChanger))
+            if (!gameValueChanger.Stackable && _nonStackableTypeCache.ContainsKey(gameValueChanger.NonStackableLabel))
             {
-                Debug.Log("GameValueChanger already exists");
                 yield break;
             }
+
+            if (_valueTempChangeValueCache.Contains(gameValueChanger))
+            {
+                yield break;
+            }
+
+            _nonStackableTypeCache.Add(gameValueChanger.NonStackableLabel, 0f);
+
             amount = GetEmphasizedChange(amount);
             Value += amount;
             TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, amount, crited);
@@ -365,21 +389,22 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                 yield return new WaitForSeconds(0.1f);
             }
             Value -= amount;
+            _nonStackableTypeCache.Remove(gameValueChanger.NonStackableLabel);
             TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, -amount, crited);
         }
 
         private IEnumerator ChangeHealthFixedAmountByInterval(GameValueChanger gameValueChanger, float amount, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
             float critChance, float critPercentage, float interval, float variantPercentage)
         {
-            if (!stackable && _nonStackableTypeCache.Contains(nonStackableType))
+            if (!stackable && _nonStackableTypeCache.ContainsKey(nonStackableType))
             {
-                Debug.Log("Change not stackable");
+                _nonStackableTypeCache[nonStackableType] = duration;
                 yield break;
             }
 
-            _nonStackableTypeCache.Add(nonStackableType);
+            _nonStackableTypeCache.Add(nonStackableType, duration);
 
-            while (duration >= 0)
+            while (_nonStackableTypeCache[nonStackableType] >= 0)
             {
                 bool crited = RollCrit(critChance);
                 float changedAmount = GetCriticalAmount(amount, crited, critPercentage);
@@ -388,24 +413,22 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                 Value += changedAmount;
                 TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, changedAmount, crited);
                 yield return new WaitForSeconds(interval);
-                duration -= interval;
+                _nonStackableTypeCache[nonStackableType] = _nonStackableTypeCache[nonStackableType] - interval;
             }
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator ChangeHealthFixedAmountByInterval(GameValueChanger gameValueChanger)
+        private IEnumerator TempChangeHealthFixedAmountByInterval(GameValueChanger gameValueChanger)
         {
-            if (!gameValueChanger.Stackable && _nonStackableTypeCache.Contains(gameValueChanger.NonStackableLabel))
+            if (!gameValueChanger.Stackable && _nonStackableTypeCache.ContainsKey(gameValueChanger.NonStackableLabel))
             {
-                Debug.Log("Change not stackable");
                 yield break;
             }
 
-            _nonStackableTypeCache.Add(gameValueChanger.NonStackableLabel);
+            _nonStackableTypeCache.Add(gameValueChanger.NonStackableLabel, 0f);
 
             if (_valueTempChangeValueCache.Contains(gameValueChanger))
             {
-                Debug.Log("GameValueChanger already exists");
                 yield break;
             }
 
@@ -426,15 +449,15 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
         private IEnumerator ChangeHealthCurrentPercentageByInterval(GameValueChanger gameValueChanger, float percentage, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
             float critChance, float critPercentage, float interval, float variantPercentage)
         {
-            if (!stackable && _nonStackableTypeCache.Contains(nonStackableType))
+            if (!stackable && _nonStackableTypeCache.ContainsKey(nonStackableType))
             {
-                Debug.Log("Change not stackable");
+                _nonStackableTypeCache[nonStackableType] = duration;
                 yield break;
             }
 
-            _nonStackableTypeCache.Add(nonStackableType);
+            _nonStackableTypeCache.Add(nonStackableType, duration);
 
-            while (duration >= 0)
+            while (_nonStackableTypeCache[nonStackableType] >= 0)
             {
                 bool crited = RollCrit(critChance);
                 float changedAmount = Value * GetCriticalAmount(percentage, crited, critPercentage);
@@ -443,24 +466,22 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                 Value += changedAmount;
                 TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, changedAmount, crited);
                 yield return new WaitForSeconds(interval);
-                duration -= interval;
+                _nonStackableTypeCache[nonStackableType] = _nonStackableTypeCache[nonStackableType] - interval;
             }
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator ChangeHealthCurrentPercentagetByInterval(GameValueChanger gameValueChanger)
+        private IEnumerator TempChangeHealthCurrentPercentagetByInterval(GameValueChanger gameValueChanger)
         {
-            if (!gameValueChanger.Stackable && _nonStackableTypeCache.Contains(gameValueChanger.NonStackableLabel))
+            if (!gameValueChanger.Stackable && _nonStackableTypeCache.ContainsKey(gameValueChanger.NonStackableLabel))
             {
-                Debug.Log("Change not stackable");
                 yield break;
             }
 
-            _nonStackableTypeCache.Add(gameValueChanger.NonStackableLabel);
+            _nonStackableTypeCache.Add(gameValueChanger.NonStackableLabel, 0f);
 
             if (_valueTempChangeValueCache.Contains(gameValueChanger))
             {
-                Debug.Log("GameValueChanger already exists");
                 yield break;
             }
 
@@ -481,15 +502,15 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
         private IEnumerator ChangeHealthMaxPercentageByInterval(GameValueChanger gameValueChanger, float percentage, float duration, bool stackable, GameValueChanger.NonStackableType nonStackableType,
             float critChance, float critPercentage, float interval, float variantPercentage)
         {
-            if (!stackable && _nonStackableTypeCache.Contains(nonStackableType))
+            if (!stackable && _nonStackableTypeCache.ContainsKey(nonStackableType))
             {
-                Debug.Log("Change not stackable");
+                _nonStackableTypeCache[nonStackableType] = duration;
                 yield break;
             }
 
-            _nonStackableTypeCache.Add(nonStackableType);
+            _nonStackableTypeCache.Add(nonStackableType, duration);
 
-            while (duration >= 0)
+            while (_nonStackableTypeCache[nonStackableType] >= 0)
             {
                 bool crited = RollCrit(critChance);
                 float changedAmount = Max * GetCriticalAmount(percentage, crited, critPercentage);
@@ -498,24 +519,22 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
                 Value += changedAmount;
                 TriggerGameScriptEvent(GameScriptEvent.OnGameValueCurrentValueChanged, this, gameValueChanger, changedAmount, crited);
                 yield return new WaitForSeconds(interval);
-                duration -= interval;
+                _nonStackableTypeCache[nonStackableType] = _nonStackableTypeCache[nonStackableType] - interval;
             }
             _nonStackableTypeCache.Remove(nonStackableType);
         }
 
-        private IEnumerator ChangeHealthMaxPercentageByInterval(GameValueChanger gameValueChanger)
+        private IEnumerator TempChangeHealthMaxPercentageByInterval(GameValueChanger gameValueChanger)
         {
-            if (!gameValueChanger.Stackable && _nonStackableTypeCache.Contains(gameValueChanger.NonStackableLabel))
+            if (!gameValueChanger.Stackable && _nonStackableTypeCache.ContainsKey(gameValueChanger.NonStackableLabel))
             {
-                Debug.Log("Change not stackable");
                 yield break;
             }
 
-            _nonStackableTypeCache.Add(gameValueChanger.NonStackableLabel);
+            _nonStackableTypeCache.Add(gameValueChanger.NonStackableLabel, 0f);
 
             if (_valueTempChangeValueCache.Contains(gameValueChanger))
             {
-                Debug.Log("GameValueChanger already exists");
                 yield break;
             }
 
