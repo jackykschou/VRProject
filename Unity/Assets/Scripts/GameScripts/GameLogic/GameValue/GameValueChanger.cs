@@ -9,6 +9,7 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
     {
         public class GameValueChangerData
         {
+            public GameObject Owner;
             public ChangeTargetValueType TargetValueType;
             public OneTimeChangeDurationType OneTimeDurationType;
             public ByIntervalChangeDurationType IntervalDurationType;
@@ -41,16 +42,17 @@ namespace Assets.Scripts.GameScripts.GameLogic.GameValue
             }
 
             public float ChangeDuration;
-            public float ChangeInterval = 1.0f;
+            public float ChangeInterval;
 
-            public float CriticalChance = 0f;
-            public float CriticalPercentage = 2.0f;
+            public float CriticalChance;
+            public float CriticalPercentage;
         }
 
         public GameValueChangerData CreateGameValueChangerData()
         {
             GameValueChangerData gameValueChanger = new GameValueChangerData
             {
+                Owner = Owner,
                 TargetValueType = TargetValueType,
                 OneTimeDurationType = OneTimeDurationType,
                 IntervalDurationType = IntervalDurationType,
